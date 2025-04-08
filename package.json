@@ -1,0 +1,27 @@
+{
+  "name": "node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "jsonToCSV.js",
+  "type": "module",
+  "dependencies": {
+    "@easypost/api": "^7.5.3",
+    "axios": "^1.7.5",
+    "dad-tool": "^4.2.0",
+    "dotenv": "^16.4.5",
+    "fs": "^0.0.1-security",
+    "inquirer": "^9.3.6",
+    "json-2-csv": "^4.1.1",
+    "open": "^10.1.0",
+    "puppeteer": "^20.9.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^5.5.4"
+  }
+}

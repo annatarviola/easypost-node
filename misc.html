@@ -1,0 +1,434 @@
+<h2 id="h_01F60964851JVXR9EQ5FD92GRH">
+    <span style="color: #000099;">How does the SmartRate API work?</span>
+  </h2>
+  <p>
+    The SmartRate API provides shippers with highly accurate, shipment-level transit
+    time predictions which can be used to save money, improve on-time delivery, and
+    provide end customers with reliable delivery estimates.
+  </p>
+  <p>&nbsp;</p>
+  <p>
+    The SmartRate API accepts a shipment ID and returns predicted transit days across
+    a variety of percentiles for each carrier service being evaluated for the shipment.
+    The transit time predictions in the response are based on a sophisticated model
+    using actual historical data for the shipping lane in question.
+  </p>
+  <p>&nbsp;</p>
+  <p>
+    To receive back the estimated delivery date for a shipment you can call the
+    <code>/delivery_date</code> endpoint with a planned date that the package will
+    be shipped on.
+  </p>
+  <p>&nbsp;</p>
+  <h2>
+    <span style="color: #000099;">How can I access the SmartRate API?</span>
+  </h2>
+  <p>The SmartRate API is available to all users.</p>
+  <p>&nbsp;</p>
+  <p>
+    **Please note that there are 500 free LIFETIME calls to this endpoint. Any request
+    after the first 500 will incur an additional fee. This includes requests made
+    while using your TEST API Key.
+  </p>
+  <p>&nbsp;</p>
+  <h2>
+    <span style="color: #000099;">What transit time data is returned from the API?</span>
+  </h2>
+  <p>
+    The SmartRate API returns a <code>time_in_transit</code> object with transit
+    days across a variety of percentiles for every rate for a given Shipment.
+  </p>
+  <table style="border-collapse: collapse; width: 100%;" border="1">
+    <tbody>
+      <tr>
+        <td style="width: 33.3333%;">
+          <strong>attribute</strong>
+        </td>
+        <td style="width: 33.3333%;">
+          <strong>type</strong>
+        </td>
+        <td style="width: 33.3333%;">
+          <strong>specification</strong>
+        </td>
+      </tr>
+      <tr>
+        <td style="width: 33.3333%;">percentile_50</td>
+        <td style="width: 33.3333%;">integer</td>
+        <td style="width: 33.3333%;">
+          expected transit time in business days at the 50th percentile
+        </td>
+      </tr>
+      <tr>
+        <td style="width: 33.3333%;">percentile_75</td>
+        <td style="width: 33.3333%;">integer</td>
+        <td style="width: 33.3333%;">
+          expected transit time in business days at the 75th percentile
+        </td>
+      </tr>
+      <tr>
+        <td style="width: 33.3333%;">percentile_85</td>
+        <td style="width: 33.3333%;">integer</td>
+        <td style="width: 33.3333%;">
+          expected transit time in business days at the 85th percentile
+        </td>
+      </tr>
+      <tr>
+        <td style="width: 33.3333%;">percentile_90</td>
+        <td style="width: 33.3333%;">integer</td>
+        <td style="width: 33.3333%;">
+          expected transit time in business days at the 90th percentile
+        </td>
+      </tr>
+      <tr>
+        <td style="width: 33.3333%;">percentile_95</td>
+        <td style="width: 33.3333%;">integer</td>
+        <td style="width: 33.3333%;">
+          expected transit time in business days at the 95th percentile
+        </td>
+      </tr>
+      <tr>
+        <td style="width: 33.3333%;">percentile_97</td>
+        <td style="width: 33.3333%;">integer</td>
+        <td style="width: 33.3333%;">
+          expected transit time in business days at the 97th percentile
+        </td>
+      </tr>
+      <tr>
+        <td style="width: 33.3333%;">percentile_99</td>
+        <td style="width: 33.3333%;">integer</td>
+        <td style="width: 33.3333%;">
+          expected transit time in business days at the 99th percentile
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <p>&nbsp;</p>
+  <p>
+    The Delivery Date endpoint will return an
+    <code>easypost_time_in_transit_data</code> object for each rate. This object
+    will contain:
+  </p>
+  <ul>
+    <li>
+      <code>easypost_estimated_delivery_date</code>, which is the most likely date
+      that the shipment will be delivered on.
+    </li>
+    <li>
+      <code>planned_ship_date</code>, which will be the date supplied to the API
+      that denotes when the package is expected to be in the carrier’s possession.&gt;
+    </li>
+    <li>
+      <code>days_in_transit</code>, which will be similar to the time in transit
+      object above with the various percentiles, except these will be the expected
+      total transit time including weekends and holidays.
+    </li>
+  </ul>
+  <p>&nbsp;</p>
+  <h2>
+    <span style="color: #000099;">How are transit days calculated?</span>
+  </h2>
+  <p>
+    When calling the SmartRate API, transit days are calculated as the number of
+    business days between the first time the carrier acknowledges possession of the
+    shipment and the first out-for-delivery attempt.
+  </p>
+  <p>&nbsp;</p>
+  <p>
+    When calling the Delivery Date endpoint, transit days are calculated as the number
+    of total days including weekends and holidays between the first time the carrier
+    acknowledges possession of the shipment and the first out-for-delivery attempt.
+  </p>
+  <p>&nbsp;</p>
+  <h2>
+    <span style="color: #000099;">How do I use the SmartRate API?</span>
+  </h2>
+  <p>
+    <span>To make a request to the SmartRate API, first, </span><a href="https://www.easypost.com/docs/api#shipments"><span class="wysiwyg-underline" style="color: #164dff;">create a shipment</span></a><span>, then make the SmartRate call using the shipment ID of the shipment you just created. Using the response, you can now make better data-driven decisions about which rate to select when purchasing a label. SmartRate API documentation can be found </span><a href="https://www.easypost.com/docs/api#smartrate"><span class="wysiwyg-underline" style="color: #164dff;">here</span></a><span>.</span>
+  </p>
+  <p>&nbsp;</p>
+  <p>Below is an example call made to the SmartRate:</p>
+  <pre>curl -X GET https://api.easypost.com/v2/shipments/shp_.../smartrate \<br> &nbsp;-u &lt;YOUR_TEST/PRODUCTION_API_KEY&gt;: \</pre>
+  <p>
+    <span>Below is a sample response to a successful call made to the API to retrieve time in transit statistics across all rates for a shipment:&lt;/span &gt; </span>
+  </p>
+  <pre>{<br> &nbsp;"result": [<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"carrier": "USPS",<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"carrier_account_id": "ca_...",<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"created_at": "2021-05-04T17:00:19Z",<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"currency": "USD",<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"delivery_date": null,<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"delivery_date_guaranteed": false,<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"delivery_days": 2,<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"est_delivery_days": 2,<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"id": "rate_...",<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"list_currency": "USD",<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"list_rate": 8.85,<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"mode": "production",<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"object": "Rate",<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"rate": 8.12,<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"retail_currency": "USD",<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"retail_rate": 11.1,<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"service": "Priority",<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"shipment_id": "shp_...",<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"time_in_transit": {<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"percentile_50": 2,<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"percentile_75": 3,<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"percentile_85": 3,<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"percentile_90": 3,<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"percentile_95": 4,<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"percentile_97": 4,<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"percentile_99": 6<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"updated_at": "2021-05-04T17:00:19Z"<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"carrier": "USPS",<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"carrier_account_id": "ca_...",<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"created_at": "2021-05-04T17:00:19Z",<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"currency": "USD",<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"delivery_date": null,<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"delivery_date_guaranteed": false,<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"delivery_days": 5,<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"est_delivery_days": 5,<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"id": "rate_...",<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"list_currency": "USD",<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"list_rate": 8.55,<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"mode": "production",<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"object": "Rate",<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"rate": 8.55,<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"retail_currency": "USD",<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"retail_rate": 8.55,<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"service": "ParcelSelect",<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"shipment_id": "shp_...",<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"time_in_transit": {<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"percentile_50": 2,<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"percentile_75": 3,<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"percentile_85": 4,<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"percentile_90": 5,<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"percentile_95": 6,<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"percentile_97": 7,<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"percentile_99": 10<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"updated_at": "2021-05-04T17:00:19Z"<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br>{<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"carrier": "USPS",<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"carrier_account_id": "ca_...",<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"created_at": "2021-05-04T17:00:19Z",<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"currency": "USD",<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"delivery_date": null,<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"delivery_date_guaranteed": false,<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"delivery_days": null,<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"est_delivery_days": null,<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"id": "rate_...",<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"list_currency": "USD",<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"list_rate": 37.5,<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"mode": "production",<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"object": "Rate",<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"rate": 37.5,<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"retail_currency": "USD",<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"retail_rate": 44.5,<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"service": "Express",<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"shipment_id": "shp_...",<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"time_in_transit": {<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"percentile_50": 1,<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"percentile_75": 2,<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"percentile_85": 3,<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"percentile_90": 3,<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"percentile_95": 4,<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"percentile_97": 5,<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"percentile_99": 8<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"updated_at": "2021-05-04T17:00:19Z"<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br> &nbsp;]<br>}</pre>
+  <p>&nbsp;</p>
+  <h2>
+    <span style="color: #000099;">How do I use the Delivery Date Endpoint of the SmartRate API?</span>
+  </h2>
+  <p>
+    <span>To make a request to the Delivery Date Endpoint, first, </span><a href="https://www.easypost.com/docs/api#shipments"><span class="wysiwyg-underline" style="color: #164dff;">create a shipment</span></a><span>, then make the SmartRate call to the delivery date endpoint using the shipment ID of the shipment you just created. When calling this endpoint, you’ll need to provide the date you plan on shipping your package as well. Using the response, you or your customers can now make better data-driven decisions about which rate to select when purchasing a label. SmartRate API documentation can be found </span><a href="https://www.easypost.com/docs/api#smartrate"><span class="wysiwyg-underline" style="color: #164dff;">here</span></a><span>.</span>
+  </p>
+  <p>&nbsp;</p>
+  <p>
+    <span>Below is an example call made to the Delivery Date endpoint:</span>
+  </p>
+  <pre><span>curl -X GET https://api.easypost.com/v2/shipments/shp_.../smartrate/delivery_date?planned_ship_date=yyyy-mm-dd \</span><br><span>&nbsp;&nbsp;-u "$EASYPOST_API_KEY":</span><span></span></pre>
+  <p>
+    <span>Below is a sample response to a successful call made to the API to retrieve time in transit statistics and estimated delivery dates across all rates for a shipment:</span>
+  </p>
+  <pre><span>"rates": [</span><br><span> &nbsp;{</span><br><span> &nbsp;&nbsp;&nbsp;“rate”: {</span><br><span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...</span><br><span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;“service”: “Express”,</span><br><span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;“carrier”: “USPS”,</span><br><span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...</span><br><span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;“delivery_days”: null,</span><br><span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;“delivery_date”: null,</span><br><span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;“delivery_date_guaranteed”: false,</span><br><span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;“est_delivery_days”: null,</span><br><span> &nbsp;&nbsp;&nbsp;},</span><br><span> &nbsp;&nbsp;&nbsp;“easypost_time_in_transit_data”: {</span><br><span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;“easypost_estimated_delivery_date”: “2023-05-06”</span><br><span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;“planned_ship_date”: “2023-05-03”</span><br><span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;“days_in_transit”: {</span><br><span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"percentile_50": 2,</span><br><span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"percentile_75": 2,</span><br><span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"percentile_85": 3,</span><br><span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"percentile_90": 3,</span><br><span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"percentile_95": 4,</span><br><span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"percentile_97": 5,</span><br><span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"percentile_99": 6</span><br><span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},</span><br><span> &nbsp;&nbsp;}<br>]</span></pre>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <h2>
+    <span style="color: #000099;">When would I use the SmartRate API?</span>
+  </h2>
+  <p>
+    <span>You can use the SmartRate API any time you are looking for a more accurate prediction of transit times for your shipments and rates. We see this happen for many customers in two key scenarios:</span>
+  </p>
+  <ul>
+    <li>
+      <span>When purchasing a label. After creating a shipment, call the SmartRate API for all business rules and workflows related to leveraging time-in-transit predictions for the shipment. You can create new workflows using the guidance below!<span><br><br></span> </span>
+    </li>
+    <li>
+      <span>When publishing delivery estimates for your end customers. After creating a shipment, use the SmartRate API to pull accurate transit time predictions for your end customers. You can create new workflows using the guidance below!&lt;</span>
+    </li>
+  </ul>
+  <p>&nbsp;</p>
+  <h2>
+    <span><span style="color: #000099;">How can I save money using the SmartRate API?</span></span>
+  </h2>
+  <p>
+    <span><span><span>Savings opportunities arise by using the API to select the cheapest rate available that meets your desired transit time parameters. For example, let’s pretend your internal targets for on-time delivery are 90% and you have a customer that purchased an item with your 2-day shipping option. You pass through the customer’s shipment information to the SmartRate API and return the following information:</span></span></span>
+  </p>
+  <div>
+    <table style="border-collapse: collapse; width: 100%;" border="1">
+      <thead>
+        <tr>
+          <td>
+            <strong>service</strong>
+          </td>
+          <td>
+            <strong>rate</strong>
+          </td>
+          <td>
+            <strong>p_90 transit days</strong>
+          </td>
+          <td>
+            <strong>p_75 transit days</strong>
+          </td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Ground</td>
+          <td>$8.76</td>
+          <td>2</td>
+          <td>2</td>
+        </tr>
+        <tr>
+          <td>2-day</td>
+          <td>$14.59</td>
+          <td>2</td>
+          <td>1</td>
+        </tr>
+        <tr>
+          <td>Next-day</td>
+          <td>$17.15</td>
+          <td>1</td>
+          <td>1</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>&nbsp;</p>
+    <p>
+      <span>The SmartRate API shows that your Ground service level arrives at the customer’s location in 2 days 90% on time. You have built-in logic with the SmartRate API to select the cheapest rate under the 90% on-time percentile, so in this case, you select the Ground service level. </span><span><br><br></span>
+    </p>
+    <p>
+      <span>Where you would previously default to selecting your 2-day service level, SmartRate unlocks the ability to save money on shipments using cheaper service levels that will still arrive on time.</span>
+    </p>
+    <p>&nbsp;</p>
+    <h2>
+      <span><span style="color: #000099;">How can I improve on-time delivery metrics using the SmartRate API?</span></span>
+    </h2>
+    <p>
+      <span><span>Opportunities arise to improve on-time delivery by using the API to select the best rate that meets your desired transit time parameters. For example, let’s pretend your internal targets for on-time delivery are 90% and you have a customer that purchased an item with your 2-day shipping option. You pass through the customer’s shipment information to the SmartRate API and return the following information:</span></span>
+    </p>
+    <p>&nbsp;</p>
+    <div>
+        <table style="border-collapse: collapse; width: 100%;" border="1">
+        <colgroup>
+  
+          <col>
+  
+          <col>
+  
+          <col>
+  
+          <col>
+  
+        </colgroup>
+        <tbody>
+          <tr>
+            <td>
+              <span>service</span>
+            </td>
+            <td>
+              <span>rate</span>
+            </td>
+            <td>
+              <span>p_90 transit days</span>
+            </td>
+            <td>
+              <span>p_75 transit days</span>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <span>Ground</span>
+            </td>
+            <td>
+              <span>$8.76</span>
+            </td>
+            <td>
+              <span>5</span>
+            </td>
+            <td>
+              <span>4</span>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <span>2-day</span>
+            </td>
+            <td>
+              <span>$14.59</span>
+            </td>
+            <td>
+              <span>3</span>
+            </td>
+            <td>
+              <span>2</span>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <span>Next-day</span>
+            </td>
+            <td>
+              <span>$17.15</span>
+            </td>
+            <td>
+              <span>2</span>
+            </td>
+            <td>
+              <span>1</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p>&nbsp;</p>
+      <p>
+        <span>The SmartRate API shows that your 2-day service level arrives at the customer’s location in 2 days only 75% on time, and arrives in 3 days 90% on time.&nbsp; You have built-in logic with the SmartRate API to select the cheapest rate under the 90% on-time percentile, so in this case, you select the Next-day service level.&nbsp;</span>
+      </p>
+      <p>
+        <span>Where you would previously default to selecting your 2-day service level and risk your shipment arriving late, SmartRate empowers you to better hit your on-time delivery targets by providing on-time delivery percentiles for every rate on a given shipment.</span>
+      </p>
+      <p>&nbsp;</p>
+      <h2>
+        <span><span style="color: #000099;">How can I improve transit time predictions for my end customers using the SmartRate API?</span></span>
+      </h2>
+      <p>
+        <span><span>Opportunities arise to improve transit time predictions for your end customers by using the API to supply time in transit predictions on your shipping options. For example, let’s pretend your internal targets for on-time delivery are 90% and you offer a 1-day, 2-day, and Ground service level to your customers as shipping options at checkout. You pass through the customer’s shipment information acquired on the checkout page to the SmartRate API and return the following information:</span></span>
+      </p>
+      <p>&nbsp;</p>
+      <div>
+        <table style="border-collapse: collapse; width: 100%;" border="1">
+          <colgroup>
+  
+            <col>
+  
+            <col>
+  
+            <col>
+  
+            <col>
+  
+          </colgroup>
+          <tbody>
+            <tr>
+              <td>
+                <span>service</span>
+              </td>
+              <td>
+                <span>rate</span>
+              </td>
+              <td>
+                <span>Carrier estimated transit days</span>
+              </td>
+              <td>
+                <span>SmartRate p_90 transit days</span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <span>Ground</span>
+              </td>
+              <td>
+                <span>$8.76</span>
+              </td>
+              <td>
+                <span>3</span>
+              </td>
+              <td>
+                <span>2</span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <span>2-day</span>
+              </td>
+              <td>
+                <span>$14.59</span>
+              </td>
+              <td>
+                <span>2</span>
+              </td>
+              <td>
+                <span>1</span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <span>Next-day</span>
+              </td>
+              <td>
+                <span>$17.15</span>
+              </td>
+              <td>
+                <span>1</span>
+              </td>
+              <td>
+                <p>
+                  <span>1</span><span></span>
+                </p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p>&nbsp;</p>
+        <p>
+          <span>The SmartRate API shows that your Ground service level arrives at the customer’s location in 2 days 90% on time. You have built-in logic with the SmartRate API to pass through the estimated transit days for all of your rates under the 90% on-time percentile as transit time estimates for your shipping options.&nbsp;</span>
+        </p>
+        <p>
+          <span>SmartRate shows your customer can elect to choose the Ground service level for a 2-day shipment or the 2-day service level for a next-day shipment. Your customer benefits from selecting the cheapest option for their delivery preferences without overspending unnecessarily.</span>
+        </p>
+        <p>&nbsp;</p>
+        <h2>
+          <span><span style="color: #000099;">How can I provide my end customers the estimated date the package would be delivered on?</span></span>
+        </h2>
+        <p>
+          <span>The Delivery Date endpoint of the SmartRate API will provide back the most likely date that your package will be delivered on.&nbsp;</span>
+        </p>
+        <p>
+          <span>To receive this, you’ll need to know the exact date that you plan on shipping your package out. This planned shipped date will have to be some time within the next 30 days. This is due to some carriers’ labels expiring within 30 days of purchasing them and rates can change from time to time making the output of the SmartRate API outdated.&nbsp;</span>
+        </p>
+        <p>
+          <span>With this, you can call the Delivery Date endpoint and receive back for each rate a easypost_time_in_transit_data object which will contain an easypost_estimated_delivery_date.&nbsp;</span>
+        </p>
+        <p>
+          <span>To have the most accurate results, call this API as close to the shipping date as possible.</span>
+        </p>
+      </div>
+    </div>
+  </div>
