@@ -12,67 +12,28 @@ const client = new EasyPostClient(process.env.PROD_KEY); // prodKey
 try {
   const batch = await client.Batch.create({
     shipments: [
+      //& ============shipments for batch buy============
       // {
-      //   reference: "356750-UPS",
-      //   mode: "test",
-      //   to_address: {
-      //     name: "QA Automation Name",
-      //     phone: "+3054440777",
-      //     email: "qa.automationlogistic@cookunity.com",
-      //     street1: "4162 County Rd 53",
-      //     city: "Mayo",
-      //     state: "Florida",
-      //     zip: "32066",
-      //     country: "US",
-      //     residential: true,
-      //   },
-      //   from_address: {
-      //     name: "CookUnity",
-      //     email: "info@cookunity.com",
-      //     street1: "5225 Collins Ave, Suite 242",
-      //     city: "Miami",
-      //     state: "FL",
-      //     zip: "33140",
-      //     country: "US",
-      //     phone: "18007425877",
-      //   },
-      //   parcel: {
-      //     length: 16.7,
-      //     width: 11.8,
-      //     height: 16.6,
-      //     weight: 384,
-      //   },
-      //   // carrier: "UPS",
-      //   // service: "Ground",
-      //   // carrier_accounts: [process.env.UPS_CA],
-      //   options: {
-      //     label_format: "PNG",
-      //     pickup_min_datetime: "2024-11-04T19:00:00.000Z",
-      //     pickup_max_datetime: "2024-11-04T22:00:00.000Z",
-      //     delivery_min_datetime: "2024-11-06T14:00:00.000-05:00",
-      //     delivery_max_datetime: "2024-11-06T17:00:00.000-05:00",
-      //     label_date: "2024-11-05T19:00:00.000-05:00",
-      //   },
-      // },
-      // {
-      //   id: "shp_8b35cd696ffe4b568e7e6ee346387422",
+      //   id: "shp_...",
       //   carrier: "UPS",
       //   service: "Ground"
       // },
       // {
-      //   id: "shp_2f1eaa2afec64ea890ed1814597dd0a2",
+      //   id: "shp_...",
       //   carrier: "UPS",
       //   service: "Ground"
       // },
+      //& ============shipment ids============
       {
-        id: "shp_40c4e54bf18e45189b49b0409cb184bd",
+        id: "shp_...",
       },
       {
-        id: "shp_54354a8221ca4f709842a200a4a488f4",
+        id: "shp_...",
       },
       {
-        id: "shp_ffac1ebebc624b5ea73e726e19f58b5d",
+        id: "shp_...",
       },
+      //& ============shipment objects============
       // {
       //   to_address: {
       //     name: "Dr. Steve Brule",
