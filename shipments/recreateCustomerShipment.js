@@ -11,8 +11,8 @@ import {
   getLabelUrl,
 } from "../utils/shipmentUtils.js";
 
-const client = new EasyPostClient(process.env.PROD_KEY); // prodKey
-// const client = new EasyPostClient(process.env.TEST_KEY); // testKey
+// const client = new EasyPostClient(process.env.PROD_KEY); // prodKey
+const client = new EasyPostClient(process.env.TEST_KEY); // testKey
 // const client = new EasyPostClient(process.env.DEFAULT_CA_PROD_KEY); // prodKey for EP default carrier accounts
 // const client = new EasyPostClient(process.env.DEFAULT_CA_TEST_KEY); // prodKey for EP default carrier accounts
 
@@ -140,22 +140,22 @@ try {
     tax_identifiers: ship.tax_identifiers,
     // options: {
     //   payment: {
-    //   type: "THIRD_PARTY",
-    //   account: "202109538",
-    //   postal_code: "60455"
-    // },
+    //     type: "THIRD_PARTY",
+    //     account: "202109538",
+    //     postal_code: "60455",
+    //   },
     //   alcohol: true,
     //   import_control: "PRINT",
     //   import_control_description: "DESCRIPTION_HERE",
-    // print_custom_1: "PRINT CUSTOM 1 HERE",
-    // print_custom_2: "printCustom2",
-    // print_custom_2_code: "PO",
-    // print_custom_3: "printCustom3",
-    // print_custom_3_code: "RMA",
+    //   print_custom_1: "PRINT CUSTOM 1 HERE",
+    //   print_custom_2: "printCustom2",
+    //   print_custom_2_code: "PO",
+    //   print_custom_3: "printCustom3",
+    //   print_custom_3_code: "RMA",
     //   print_custom_1_barcode: true,
     //   print_custom_2_barcode: true,
-    // label_format: "PDF",
-    // label_size: "4x6",
+    //   label_format: "PDF",
+    //   label_size: "4x6",
     //   label_date: "2022-06-25T15:00:00Z",
     //   incoterm: "DAP",
     //   invoice_number: "123456789",
@@ -174,16 +174,16 @@ try {
     //   },
     //   dropoff_max_datetime: "2021-05-20T15:00:00Z",
     //   delivery_confirmation: "SERVICE_DEFAULT",
-    // commercial_invoice_format: "PNG",
-    // commercial_invoice_size: "4x6",
+    //   commercial_invoice_format: "PNG",
+    //   commercial_invoice_size: "4x6",
     //   delivery_min_datetime: "2022-05-10 10:30:00",
     //   delivery_max_datetime: "2022-05-10 10:30:00",
     //   pickup_min_datetime: "2022-05-10 10:30:00",
     //   pickup_max_datetime: "2022-05-10 10:30:00",
     //   customs_broker_address_id: toAddress.id,
     // },
-    carrier_accounts: [process.env.FEDEX_CA],
-    // service: 'ExpeditedParcel',
+    carrier_accounts: [process.env.OSMV2_CA],
+    // service: 'ExpressPostSignature',
     // reference: crypto.randomUUID(),
     reference: "REFERENCE 1",
     invoice_number: "invoice number",
@@ -278,6 +278,24 @@ try {
   //   console.log("SHIPMENT BUY ERROR:");
   //   console.log(error);
   // }
+  //================refund shipment==================
+  try {
+    const boughtShipment = await client.Shipment.retrieve(shipment.id);
+
+    console.log(``);
+    console.log(``);
+    console.log(`attempting to refund ${shipment.id}...`);
+
+    const refund = await client.Refund.create({
+      carrier: boughtShipment.selected_rate.carrier,
+      tracking_codes: [boughtShipment.tracking_code],
+    });
+    console.log(refund);
+  } catch (error) {
+    console.log("   ");
+    console.log("SHIPMENT REFUND ERROR:");
+    console.log(error);
+  }
 } catch (error) {
   console.log("   ");
   console.log("SHIPMENT CREATE ERROR:");

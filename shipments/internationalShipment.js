@@ -38,12 +38,12 @@ const spain2 = dad.random("EU_ES");
 const toAddress = await client.Address.create({
   name: "Example Destination Name",
   company: "Example Destination Company",
-  street1: unitedstates1.street1,
-  street2: unitedstates1.street2,
-  city: unitedstates1.city,
-  state: unitedstates1.state,
-  zip: unitedstates1.zip,
-  country: unitedstates1.country,
+  street1: canada1.street1,
+  street2: canada1.street2,
+  city: canada1.city,
+  state: canada1.state,
+  zip: canada1.zip,
+  country: canada1.country,
   phone: "1234567890",
   email: "example@email.com",
   federal_tax_id: "12345",
@@ -54,12 +54,12 @@ const toAddress = await client.Address.create({
 const fromAddress = await client.Address.create({
   name: "Example Origin Name",
   company: "Example Origin Name",
-  street1: unitedkingdom2.street1,
-  street2: unitedkingdom2.street2,
-  city: unitedkingdom2.city,
-  state: unitedkingdom2.state,
-  zip: unitedkingdom2.zip,
-  country: unitedkingdom2.country,
+  street1: unitedstates2.street1,
+  street2: unitedstates2.street2,
+  city: unitedstates2.city,
+  state: unitedstates2.state,
+  zip: unitedstates2.zip,
+  country: unitedstates2.country,
   phone: "0987654321",
   email: "example@email.com",
   federal_tax_id: "67890",
@@ -83,10 +83,10 @@ const returnAddress = await client.Address.create({
 
 // CREATE PARCEL
 const parcel = await client.Parcel.create({
-  length: 8.0,
-  width: 6.0,
-  height: 1.0,
-  weight: 35.27,
+  length: 5.0,
+  width: 5.0,
+  height: 5.0,
+  weight: 0.01,
   // predefined_package: "Letter",
 });
 
@@ -96,9 +96,10 @@ const customsItem = await client.CustomsItem.create({
   quantity: 1,
   weight: 5,
   value: 12,
-  hs_tariff_number: "123456",
+  hs_tariff_number: "1234.56.0546",
   origin_country: "US",
   code: "12345",
+  currency: "GBP",
   manufacturer: "EasyPost",
 });
 
@@ -106,10 +107,10 @@ const customsInfo = await client.CustomsInfo.create({
   eel_pfc: "NOEEI 30.37(a)",
   customs_certify: true,
   customs_signer: "Steve Brule",
-  contents_type: "returned_goods",
+  contents_type: "merchandise",
   contents_explanation: "customs_info.contents_explanation value here",
   restriction_type: "none",
-  restriction_comments: "",
+  restriction_comments: "[customs_info.restriction_comments value here]",
   declaration: "customs_info.declaration value here",
 
   /* customs_items can be passed in as instances or ids.
@@ -135,9 +136,9 @@ try {
   console.log("   ");
 
   const shipment = await client.Shipment.create({
-    // is_return: true,
+    is_return: true,
     to_address: toAddress,
-    // from_address: {
+    // to_address: {
     //   company: "Causeway Sensors Ltd",
     //   name: "Deirdre \nFrancis",
     //   street1: "IRCEP Buil Queens Univ. Belfast,",
@@ -150,35 +151,35 @@ try {
     //   email: "dfrancis@causewaysensors.com",
     // },
     from_address: fromAddress,
-    // to_address: {
-    //   company: "Darwin Microfluidics",
-    //   name: "Vincent Rocher",
-    //   street1: "INOVTRONIK",
-    //   street2: "18 rue Denis Papin",
-    //   city: "Beauchamp",
+    // from_address: {
+    //   name: "Michael Mouse",
+    //   // company: "Vincent Rocher",
+    //   street1: "Damrak 8",
+    //   // street2: "18 rue Denis Papin",
+    //   city: "Amsterdam",
     //   state: null,
-    //   zip: "95250",
-    //   country: "FR",
+    //   zip: "1012 LG",
+    //   country: "NL",
     //   phone: "+33189197051",
-    //   email: "admin@darwin-microfluidics.com",
+    //   email: "michael@mouse.com",
     // },
     // return_address: returnAddress,
     // buyer_address: {
     //   name: "BUYER ADDRESS",
-    //   // company: "MITO Warehouse",
+    // company: "MITO Warehouse",
     //   street1: "1122 E 500 S",
-    //   // street2: "Suite B",
+    // street2: "Suite B",
     //   city: "SALT LAKE CITY",
     //   state: "UT",
     //   zip: "84102",
     //   country: "US",
     //   phone: "0123456789",
-    //   // email: "lynsey@mitomaterials.com",
+    // email: "lynsey@mitomaterials.com",
     // },
     // return_address: { ... },     // add non-dad dummy data
     parcel: parcel,
     customs_info: customsInfo,
-    // customs_info: { ... },        // add non-dad dummy data
+    // customs_info: { ... },        // add non-dummy data
     // customs_info: {
     //   contents_explanation: "Laboratory supplies (non medical use)",
     //   contents_type: "merchandise",
@@ -210,82 +211,75 @@ try {
     // tax_identifiers: [
     //   {
     //     entity: "SENDER",
-    //     tax_id: "9999999999",
+    //     tax_id: "123456789",
     //     tax_id_type: "EORI",
     //     issuing_country: "US",
     //   },
     // ],
     options: {
-      // currency: "USD",
-      // reference: "package-77894747",
-      // invoice: "77734619-2526177817-RE",
-      // saturday_delivery: false,
-      // alcohol: false,
-      // incoterm: "DAP",
-      // cost_center: "warehouse31",
-      // endorsement: "RETURN_SERVICE_REQUESTED",
-      // freight_charge: 0,
-      // address_validation_level: "O",
-      // import_control: "PRINT",
-      // import_control_description: "import control description",
-      // carrier_insurance_amount: "1000",
-      // print_custom_1: "AWESOME SOLUTIONS",
-      // print_custom_2: "PRINT CUSTOM 2",
-      // print_custom_2_code: "PO",
-      // print_custom_3: "PRINT CUSTOM 3",
-      // print_custom_3_code: "RMA",
-      // print_custom_4: "PRINT CUSTOM 4",
-      // print_custom_4_code: "DP",
-      // print_custom_1_barcode: true,
-      // print_custom_2_barcode: true,
-      // hazmat: "SECONDARY_CONTAINED"
-      // commercial_invoice_letterhead: "IMAGE_1",
-      // commercial_invoice_signature: "IMAGE_2",
-      commercial_invoice_format: "ZPL",
-      // commercial_invoice_size: "4x6"
-      // suppress_etd: true,
-      // freight_charge: 0,
-      // customs_include_shipping: true,
-      // date_advance: "1",
-      // handling_instructions: "API O#: 14639 | OLP O#: 300014639",
-      // postage_label_inline: true,
-      // label_format: "pdf",
-      // one_page: true,
-      // label_size: "4X6",
-      // merchant_id: "EasyPost",
-      // incoterm: "DDP",
-      // label_date: "2024-07-28T15:00:00Z",
-      // oriiginal_ship_date: "2024-07-28T15:00:00Z",
-      // overlabel_original_tracking_number: "0123456789",
-      // incoterm: "DTP",
-      // currency: "USD",
-      // invoice_number: "123456789",
-      // importer_address_id: "adr_9faf7d50d84311ef85b73cecef1b359e",
-      // customs_broker_address_id: "adr_8c1da6ead84311efb61aac1f6bc539ae",
-      // payment: {
-      //   type: "THIRD_PARTY",
-      //   account: "H699G0",
-      //   country: "US",
-      //   postal_code: "84102",
-      // },
-      // duty_payment_account: {
-      //   type: "THIRD_PARTY",
-      //   account: "510087780",
-      //   country: "US",
-      //   postal_code: "12345",
-      // },
-      // dropoff_max_datetime: "2021-05-20T15:00:00Z",
-      // delivery_confirmation: "NO_SIGNATURE",
-      // commercial_invoice_format: "PNG",
-      // delivery_min_datetime: "2022-05-10 10:30:00",
-      // delivery_max_datetime: "2022-05-10 10:30:00",
-      // pickup_min_datetime: "2022-05-10 10:30:00",
-      // pickup_max_datetime: "2022-05-10 10:30:00",
-      // customs_broker_address_id: toAddress.id,
+      address_validation_level: "O",
+      alcohol: false,
+      carrier_insurance_amount: "1000",
+      commercial_invoice_format: "PNG",
+      commercial_invoice_letterhead: "IMAGE_1",
+      commercial_invoice_signature: "IMAGE_2",
+      commercial_invoice_size: "4x6",
+      cost_center: "warehouse31",
+      currency: "USD",
+      customs_broker_address_id: "toAddress.id",
+      customs_include_shipping: true,
+      date_advance: "1",
+      delivery_confirmation: "NO_SIGNATURE",
+      delivery_max_datetime: "2022-05-10 10:30:00",
+      delivery_min_datetime: "2022-05-10 10:30:00",
+      dropoff_max_datetime: "2021-05-20T15:00:00Z",
+      duty_payment_account: {
+        account: "510087780",
+        country: "US",
+        postal_code: "12345",
+        type: "THIRD_PARTY",
+      },
+      endorsement: "RETURN_SERVICE_REQUESTED",
+      freight_charge: 0,
+      handling_instructions: "API O#: 14639 | OLP O#: 300014639",
+      hazmat: "SECONDARY_CONTAINED",
+      import_control: "PRINT",
+      import_control_description: "import control description",
+      importer_address_id: "adr_9faf7d50d84311ef85b73cecef1b359e",
+      incoterm: "DTP",
+      invoice: "77734619-2526177817-RE",
+      invoice_number: "123456789",
+      label_date: "2024-07-28T15:00:00Z",
+      label_format: "PNG",
+      label_size: "4X6",
+      merchant_id: "EasyPost",
+      one_page: true,
+      oriiginal_ship_date: "2024-07-28T15:00:00Z",
+      overlabel_original_tracking_number: "0123456789",
+      payment: {
+        account: "H699G0",
+        country: "US",
+        postal_code: "84102",
+        type: "THIRD_PARTY",
+      },
+      pickup_max_datetime: "2022-05-10 10:30:00",
+      pickup_min_datetime: "2022-05-10 10:30:00",
+      postage_label_inline: true,
+      print_custom_1: "AWESOME SOLUTIONS",
+      print_custom_1_barcode: true,
+      print_custom_2: "PRINT CUSTOM 2",
+      print_custom_2_barcode: true,
+      print_custom_2_code: "PO",
+      print_custom_3: "PRINT CUSTOM 3",
+      print_custom_3_code: "RMA",
+      print_custom_4: "PRINT CUSTOM 4",
+      print_custom_4_code: "DP",
+      reference: "package-77894747",
+      saturday_delivery: false,
+      suppress_etd: true,
     },
-
-    carrier_accounts: [process.env.RMV3_CA],
-    // service: 'INTERNATIONAL_ECONOMY',
+    carrier_accounts: [process.env.USPS_CA],
+    // service: 'Tracked24',
     reference: "[REFERENCE VALUE]",
     // reference: crypto.randomUUID(),     // pass random number as reference
   });
@@ -315,7 +309,7 @@ try {
   // log shipment ID & admin link
   getAdminLink(shipment);
 
-  //============buy shipment by lowest rate============
+  // ============buy shipment by lowest rate============
   try {
     console.log("   ");
     console.log("   ");
@@ -374,6 +368,24 @@ try {
   //     console.log("SHIPMENT BUY ERROR:")
   //     console.log(error)
   // }
+  //================refund shipment==================
+  try {
+    const boughtShipment = await client.Shipment.retrieve(shipment.id);
+
+    console.log(``);
+    console.log(``);
+    console.log(`attempting to refund ${shipment.id}...`);
+
+    const refund = await client.Refund.create({
+      carrier: boughtShipment.selected_rate.carrier,
+      tracking_codes: [boughtShipment.tracking_code],
+    });
+    console.log(refund);
+  } catch (error) {
+    console.log("   ");
+    console.log("SHIPMENT REFUND ERROR:");
+    console.log(error);
+  }
 } catch (error) {
   console.log("   ");
   console.log("SHIPMENT CREATE ERROR:");
